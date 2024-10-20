@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
+using OnlineStore.Categories;
+using OnlineStore.Products;
+
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -52,7 +56,8 @@ public class OnlineStoreDbContext :
     public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
 
     #endregion
-
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Category> Categories { get; set; }
     public OnlineStoreDbContext(DbContextOptions<OnlineStoreDbContext> options)
         : base(options)
     {
@@ -73,7 +78,8 @@ public class OnlineStoreDbContext :
         builder.ConfigureOpenIddict();
         builder.ConfigureFeatureManagement();
         builder.ConfigureTenantManagement();
-
+        builder.ApplyConfiguration(new OnlineStore.Settings.Configuration.ProductConfiguration());
+        builder.ApplyConfiguration(new OnlineStore.Settings.Configuration.CategoryConfiguration());
         /* Configure your own tables/entities inside here */
 
         //builder.Entity<YourEntity>(b =>
